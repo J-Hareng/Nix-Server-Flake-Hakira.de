@@ -1,15 +1,9 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ./server-networking.nix
-    ../../modules/services.nix
+    ../../modules/a_defaults.nix
   ];
 
   boot.loader.grub.enable = true;
@@ -32,7 +26,11 @@
   users.users.admin = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+
+    shell = pkgs.fish;
+
   };
+  programs.fish.enable = true;
 
   virtualisation.docker.enable = true;
 

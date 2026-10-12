@@ -1,4 +1,5 @@
-{ ... }:
+{ config, ... }:
+
 {
   networking.firewall = {
     enable = true;
@@ -15,6 +16,14 @@
       465
       587
       993
+
+      #beszel
+      8090
+      45876
     ];
+
+    # Tailscale
+    trustedInterfaces = [ "tailscale0" ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
   };
 }

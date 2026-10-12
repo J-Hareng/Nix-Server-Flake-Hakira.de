@@ -1,8 +1,16 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    vim
     wget
+    curl
+    git
+    fastfetch
+
+    # terminal
+    starship
+    fish
+
+    vim
     htop
     btop
     tmux
