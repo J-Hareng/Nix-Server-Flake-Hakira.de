@@ -35,9 +35,9 @@ jobs:
         run: |
           rsync -az --delete \
             --exclude '.git' --exclude '.github' \
-            ./ admin@your.server.example:/home/admin/nix-config/
+            ./ "${{ secrets.DEPLOY_USER }}"@"${{ secrets.DEPLOY_SERVER }}":"${{secrets.DEPLOY_LOCATION}}"
 
       - name: Switch with nh
         run: |
-          ssh admin@your.server.example \
-            'nh os switch /home/admin/nix-config -H myhost'
+          ssh "${{ secrets.DEPLOY_USER }}"@"${{secrets.DEPLOY_SERVER}}"\
+            'nh os switch'
