@@ -4,10 +4,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
-  # Push Test
+  # Push Test 2
   outputs =
     {
-      self,
       nixpkgs,
       ...
     }:
