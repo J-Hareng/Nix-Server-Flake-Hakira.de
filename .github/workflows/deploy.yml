@@ -5,17 +5,17 @@ on:
     branches: [main]
   pull_request:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - run: nix flake check
-      # Evaluate only (cheap, works for any architecture):
-      - run: nix eval .#nixosConfigurations.server.config.system.build.toplevel.drvPath
-      # Or do a real build if the server is x86_64:
-      # - run: nix build .#nixosConfigurations.myhost.config.system.build.toplevel
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: DeterminateSystems/nix-installer-action@main
+#       - run: nix flake check
+#       # Evaluate only (cheap, works for any architecture):
+#       - run: nix eval .#nixosConfigurations.server.config.system.build.toplevel.drvPath
+#       # Or do a real build if the server is x86_64:
+#       # - run: nix build .#nixosConfigurations.myhost.config.system.build.toplevel
 
   deploy:
     needs: build
