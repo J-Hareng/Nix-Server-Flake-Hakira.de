@@ -6,15 +6,15 @@
     enable = true;
     package = pkgs.couchdb3;
     bindAddress = "127.0.0.1";
-    adminUser = "admin";
-    adminPass = builtins.readFile /etc/secrets/LiveSync/adminkey;
 
     extraConfig = {
+      admins = {
+        admin = "-pbkdf2-797be09c3c86bd06ba284544958f88ea06543c9101296d772e4e027b8174d85c";
+      };
       chttpd = {
         enable_cors = true;
         require_valid_user = true;
       };
-
       cors = {
         credentials = true;
         origins = "app://obsidian.md,capacitor://localhost,http://localhost";
