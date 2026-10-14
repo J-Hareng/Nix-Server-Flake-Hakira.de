@@ -9,7 +9,9 @@
 
     extraConfig = {
       admins = {
-        admin = "-pbkdf2-797be09c3c86bd06ba284544958f88ea06543c9101296d772e4e027b8174d85c";
+        admin = "
+-pbkdf2-59d4fbf0d0c5c61d25b651932eae64c6ce33bcb625b1cd5f21da6b98cf74f588,4f50816b988112da5430774f53d28315,10000
+";
       };
       chttpd = {
         enable_cors = true;
