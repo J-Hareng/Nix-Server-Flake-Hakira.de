@@ -14,5 +14,7 @@
     htop
     btop
     tmux
+
+    nh
   ];
 }
