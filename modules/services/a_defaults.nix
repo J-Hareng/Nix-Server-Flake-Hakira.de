@@ -7,6 +7,7 @@
     ./beszel.nix
     ./tailscale.nix
     ./live-sync-obsidean.nix
+    ./mcserver.nix
 
     ./email/stalwart.nix
     ./email/webmail.nix
