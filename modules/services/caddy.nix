@@ -33,11 +33,23 @@ in
       encode zstd gzip
       reverse_proxy http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}
     '';
+
+    virtualHosts."livesync.${domain}".extraConfig = ''
+      reverse_proxy 127.0.0.1:5984 {
+        
+        # Wichtig: Header durchreichen, damit CouchDB
+        # die Origin-Prüfung korrekt durchführen kann.
+        header_up Host {http.reverse_proxy.upstream.hostport}
+        header_up X-Forwarded-For {client_ip}
+        header_up X-Forwarded-Proto {scheme}
+      }
+    '';
+
+    #Mail
     virtualHosts."mta-sts.${domain}".extraConfig = ''
       root * ${mtaSts}
       file_server
     '';
-
     virtualHosts."autoconfig.${domain}".extraConfig = ''
       @xml path /mail/config-v1.1.xml
       handle @xml {
@@ -47,7 +59,6 @@ in
         respond "Not found" 404
       }
     '';
-
     virtualHosts."autodiscover.${domain}".extraConfig = ''
       @xml path /autodiscover/autodiscover.xml
       handle @xml {
@@ -58,6 +69,7 @@ in
       }
     '';
 
+    #Tailnet
     virtualHosts."hakira.${tailnetName}".extraConfig = ''
       tls {
         get_certificate tailscale
