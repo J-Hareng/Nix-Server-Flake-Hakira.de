@@ -22,7 +22,7 @@
     in
     {
       nixosConfigurations = {
-        server = mkSystem "server";
+        hakira = mkSystem "hakira";
       };
     };
 }
