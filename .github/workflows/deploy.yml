@@ -18,7 +18,7 @@ jobs:
 #       # - run: nix build .#nixosConfigurations.myhost.config.system.build.toplevel
 
   deploy:
-    needs: build
+    # needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
