@@ -4,6 +4,6 @@
     enable = true;
     package = pkgs.jellyfin;
     dataDir = "/home/admin/nxt/jellyfin";
-    services.jellyfin.user = "admin";
+    user = "admin";
   };
 }
