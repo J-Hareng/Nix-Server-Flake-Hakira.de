@@ -2,7 +2,8 @@
 {
   services.jellyfin = {
     enable = true;
-    services.jellyfin.package = pkgs.jellyfin;
+    package = pkgs.jellyfin;
     dataDir = "/home/admin/nxt/jellyfin";
+    services.jellyfin.user = "admin";
   };
 }
