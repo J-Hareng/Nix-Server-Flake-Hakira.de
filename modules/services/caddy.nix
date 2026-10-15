@@ -25,6 +25,9 @@ in
       reverse_proxy http://127.0.0.1:8090
     '';
 
+    virtualHosts."media.${domain}".extraConfig = ''
+      reverse_proxy http://127.0.0.1:8096
+    '';
     virtualHosts."auth.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:9000
     '';
