@@ -31,8 +31,8 @@
       rproxy = 1;
     };
     accounts = {
-      admin.passwordFile = "/var/lib/copyparty/admin.pw";
-      berry.passwordFile = "/var/lib/copyparty/berry.pw";
+      admin.passwordFile = "/etc/secrets/copyparty/admin.pw";
+      berry.passwordFile = "/etc/secrets/copyparty/berry.pw";
     };
     volumes."/" = {
       path = "/srv/music";
