@@ -9,6 +9,7 @@
     ./live-sync-obsidean.nix
     ./mcserver.nix
     ./navidrome.nix
+    ./beets.nix
 
     ./email/stalwart.nix
     ./email/webmail.nix
