@@ -36,9 +36,8 @@ let
 in
 {
   environment.systemPackages = [ beetWrapper ];
-
   systemd.tmpfiles.rules = [
-    "d /var/lib/beets 0775 navidrome navidrome -"
+    "d /var/lib/beets 0775 navidrome music -"
   ];
 
 }
