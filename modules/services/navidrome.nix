@@ -19,8 +19,10 @@
       Address = "127.0.0.1";
       Port = 4533;
       MusicFolder = "/srv/music";
+      PID.Album = "musicbrainz_albumid|albumartistid,album,albumversion";
     };
   };
+
   #
   # services.copyparty = {
   #   enable = true;
