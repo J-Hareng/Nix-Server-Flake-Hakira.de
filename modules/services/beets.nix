@@ -30,6 +30,7 @@ let
   };
 
   beetWrapper = pkgs.writeShellScriptBin "beet" ''
+    export BEETSDIR=/var/lib/beets
     exec ${pkgs.beets}/bin/beet -c ${beetsConfig} "$@"
   '';
 in
@@ -39,4 +40,5 @@ in
   systemd.tmpfiles.rules = [
     "d /var/lib/beets 0775 navidrome navidrome -"
   ];
+
 }
