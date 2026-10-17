@@ -15,6 +15,15 @@
   services.navidrome = {
     enable = true;
     group = "music";
+
+    plugins = with pkgs.navidromePlugins; [
+      audiomuseai
+      apple-music
+      listenbrainz-daily-playlist
+      lyrics-plugin
+      navidrome-coverartarchive-plugin
+    ];
+
     settings = {
       Address = "127.0.0.1";
       Port = 4533;
