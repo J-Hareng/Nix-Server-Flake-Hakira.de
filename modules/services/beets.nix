@@ -13,7 +13,8 @@ let
     ];
 
     import = {
-      copy = true;
+      # copy = true;
+      move = true;
       write = true;
       quiet_fallback = "skip";
       log = "/var/lib/beets/skipped.log";
