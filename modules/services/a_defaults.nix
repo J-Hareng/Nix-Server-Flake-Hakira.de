@@ -11,6 +11,9 @@
     ./navidrome.nix
     ./beets.nix
 
+    ./music/beets.nix
+    ./music/navidrome.nix
+
     ./email/stalwart.nix
     ./email/webmail.nix
   ];
