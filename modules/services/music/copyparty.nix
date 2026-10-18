@@ -1,7 +1,7 @@
 { ... }: {
   services.copyparty = {
     enable = true;
-    user = "navidrome";
+    # user = "navidrome";
     group = "music";
 
     settings = {
