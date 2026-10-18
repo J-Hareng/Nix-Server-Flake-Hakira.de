@@ -3,11 +3,13 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    copyparty.url = "github:9001/copyparty";
   };
-  # Push Test 2
+
   outputs =
     {
       nixpkgs,
+      copyparty,
       ...
     }:
     let
@@ -16,6 +18,8 @@
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            copyparty.nixosModules.default
+            { nixpkgs.overlays = [ copyparty.overlays.default ]; }
             ./hosts/vm4
           ];
         };
