@@ -28,6 +28,10 @@ in
     virtualHosts."media.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:4533
     '';
+    virtualHosts."upload.${domain}".extraConfig = ''
+      reverse_proxy http://127.0.0.1:3923
+    '';
+
     virtualHosts."auth.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:9000
     '';

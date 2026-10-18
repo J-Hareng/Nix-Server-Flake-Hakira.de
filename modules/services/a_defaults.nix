@@ -8,11 +8,10 @@
     ./tailscale.nix
     ./live-sync-obsidean.nix
     ./mcserver.nix
-    ./navidrome.nix
-    ./beets.nix
 
     ./music/beets.nix
     ./music/navidrome.nix
+    ./music/copyparty.nix
 
     ./email/stalwart.nix
     ./email/webmail.nix
