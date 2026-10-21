@@ -39,7 +39,7 @@
 
   programs.fish.enable = true;
 
-  virtualisation.docker.enable = true;
+  virtualisation.podman.enable = true;
 
   system.stateVersion = "26.05";
 }
