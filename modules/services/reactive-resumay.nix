@@ -41,7 +41,7 @@ in
   virtualisation.oci-containers = {
     backend = "podman";
     containers.reactive-resume = {
-      image = "ghcr.io/amruthpillai/reactive-resume:6.0.4"; # konkreten Tag pinnen, nicht latest
+      image = "ghcr.io/amruthpillai/reactive-resume:v6.0.4"; 
       environment = {
         APP_URL = appUrl;
         STORAGE_BACKEND = "local";
