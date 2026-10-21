@@ -1,9 +1,7 @@
 { config, pkgs, ... }:
 {
-  virtualisation.docker.enable = true;
-
   virtualisation.oci-containers = {
-    backend = "docker";
+    backend = "podman";
     containers.minecraft = {
       image = "itzg/minecraft-server:java21";
       ports = [ "25565:25565" ];
