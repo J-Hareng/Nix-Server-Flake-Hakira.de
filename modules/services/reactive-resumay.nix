@@ -17,8 +17,8 @@ in
 
   systemd.services.reactive-resume-db-password = {
     description = "Set Reactive Resume DB password";
-    after = [ "postgresql.service" ];
-    requires = [ "postgresql.service" ];
+    after = [ "postgresql.service" "postgresql-setup.service" ];
+    requires = [ "postgresql.service" "postgresql-setup.service" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
@@ -54,6 +54,7 @@ in
         "--network=host"
         "--security-opt=no-new-privileges"
         "--cap-drop=ALL"
+
       ];
     };
   };
