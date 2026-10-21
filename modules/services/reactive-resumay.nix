@@ -64,7 +64,9 @@ in
     requires = [ "reactive-resume-db-password.service" ];
   };
 
-  systemd.tmpfiles.rules = [ "d /var/lib/reactive-resume 0750 root root -" ];
+systemd.tmpfiles.rules = [
+  "d /var/lib/reactive-resume 0750 1000 1000 -"
+];
 
   # Port nur über das Tailscale-Interface erreichbar
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8444 ];
