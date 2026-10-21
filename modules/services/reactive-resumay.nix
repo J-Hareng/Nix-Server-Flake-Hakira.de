@@ -32,7 +32,6 @@ in
     '';
   };
 
-  # Tägliche DB-Dumps nach /var/backup/postgresql
   services.postgresqlBackup = {
     enable = true;
     databases = [ "reactive_resume" ];
@@ -42,7 +41,7 @@ in
   virtualisation.oci-containers = {
     backend = "podman";
     containers.reactive-resume = {
-      image = "ghcr.io/amruthpillai/reactive-resume:vX.Y.Z"; # konkreten Tag pinnen, nicht latest
+      image = "ghcr.io/amruthpillai/reactive-resume:6.0.4"; # konkreten Tag pinnen, nicht latest
       environment = {
         APP_URL = appUrl;
         STORAGE_BACKEND = "local";
