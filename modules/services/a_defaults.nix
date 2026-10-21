@@ -8,6 +8,7 @@
     ./tailscale.nix
     ./live-sync-obsidean.nix
     ./mcserver.nix
+    ./reactive-resumay.nix
 
     ./music/beets.nix
     ./music/navidrome.nix
