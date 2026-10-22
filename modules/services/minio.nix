@@ -9,8 +9,8 @@
     enable = true;
     rootCredentialsFile = "/etc/secrets/minio/root-credentials";
     dataDir = [ "/var/lib/minio/data" ];
-    listenAddress = "127.0.0.1:9000";   # S3 API
-    consoleAddress = "127.0.0.1:9001";  # Web console
+    listenAddress = "127.0.0.1:9010";   # S3 API
+    consoleAddress = "127.0.0.1:9011";  # Web console
   };
 
   # 3. Idempotent bucket creation on every boot
