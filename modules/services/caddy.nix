@@ -82,6 +82,27 @@ in
       abort @outside
       reverse_proxy 127.0.0.1:8080
     '';
+    
+
+    virtualHosts."hakira.${tailnetName}:9000".extraConfig = ''
+      tls {
+        get_certificate tailscale
+      }
+      @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
+      abort @outside
+      encode zstd gzip
+      reverse_proxy 127.0.0.1:9000
+    '';
+
+    virtualHosts."hakira.${tailnetName}:9001".extraConfig = ''
+      tls {
+        get_certificate tailscale
+      }
+      @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
+      abort @outside
+      encode zstd gzip
+      reverse_proxy 127.0.0.1:9000
+    '';
 
     virtualHosts."hakira.${tailnetName}:8444".extraConfig = ''
       tls {

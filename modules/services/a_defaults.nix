@@ -9,6 +9,7 @@
     ./live-sync-obsidean.nix
     ./mcserver.nix
     ./reactive-resumay.nix
+    ./minio.nix
 
     ./music/beets.nix
     ./music/navidrome.nix
