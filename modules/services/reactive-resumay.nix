@@ -53,8 +53,6 @@ in
       extraOptions = [
         "--network=host"
         "--security-opt=no-new-privileges"
-        "--cap-drop=ALL"
-
       ];
     };
   };

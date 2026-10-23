@@ -10,6 +10,7 @@
     ./mcserver.nix
     ./reactive-resumay.nix
     ./minio.nix
+    ./immich.nix
 
     ./music/beets.nix
     ./music/navidrome.nix

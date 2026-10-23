@@ -14,20 +14,18 @@ in
   services.caddy = {
     enable = true;
 
-    # This must be global, not inside a tls block
-    # globalConfig = ''
-    #   on_demand_tls {
-    #     ask "http://localhost/"
-    #   }
-    # '';
-
     virtualHosts."stats.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:8090
+    '';
+
+    virtualHosts."immich.${domain}".extraConfig = ''
+      reverse_proxy http://127.0.0.1:2283
     '';
 
     virtualHosts."media.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:4533
     '';
+
     virtualHosts."upload.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:3923
     '';
