@@ -15,7 +15,7 @@ in
     enable = true;
     package = unstable.immich;
     port = 2283;
-    host = "172.0.0.1";
+    host = "127.0.0.1";
     mediaLocation = "/srv/immich";  # change if you have a bigger disk/mount
     environment = {
       IMMICH_TRUSTED_PROXIES = "127.0.0.1";  # so Immich sees real client IPs
