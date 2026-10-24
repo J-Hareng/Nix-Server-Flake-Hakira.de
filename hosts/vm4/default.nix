@@ -15,7 +15,6 @@
   ];
 
   networking.hostName = "hakira";
-
   time.timeZone = "Europe/Berlin";
 
   console = {
@@ -29,6 +28,7 @@
 
     shell = pkgs.fish;
   };
+  programs.fish.enable = true;
 
   programs.nh = {
     enable = true;
@@ -37,7 +37,6 @@
     flake = "/home/admin/nix-config/";
   };
 
-  programs.fish.enable = true;
 
   virtualisation.podman.enable = true;
 
