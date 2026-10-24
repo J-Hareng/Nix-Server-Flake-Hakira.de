@@ -82,7 +82,7 @@ in
     '';
     
 
-    virtualHosts."hakira.${tailnetName}:9010".extraConfig = ''
+    virtualHosts."hakira.${tailnetName}:9110".extraConfig = ''
       tls {
         get_certificate tailscale
       }
@@ -92,7 +92,7 @@ in
       reverse_proxy 127.0.0.1:9010
     '';
 
-    virtualHosts."hakira.${tailnetName}:9011".extraConfig = ''
+    virtualHosts."hakira.${tailnetName}:9111".extraConfig = ''
       tls {
         get_certificate tailscale
       }
