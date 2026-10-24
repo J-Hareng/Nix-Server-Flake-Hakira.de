@@ -40,4 +40,4 @@ jobs:
       - name: Switch with nh
         run: |
           ssh "${{ secrets.DEPLOY_USER }}"@"${{secrets.DEPLOY_SERVER}}"\
-            'nh os switch'
+            'nh os build'
