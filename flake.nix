@@ -13,7 +13,7 @@
       copyparty,
       nixpkgs-unstable,
       ...
-    }:
+    }@inputs:
     let
       mkSystem =
         hostname:
