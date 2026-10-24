@@ -19,6 +19,7 @@
         hostname:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             copyparty.nixosModules.default
             { nixpkgs.overlays = [ copyparty.overlays.default ]; }
