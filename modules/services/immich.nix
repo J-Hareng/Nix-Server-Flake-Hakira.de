@@ -1,4 +1,8 @@
-{ config, pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  ...
+}:
 let
   unstable = import inputs.nixpkgs-unstable {
     inherit (pkgs.stdenv.hostPlatform) system;
@@ -16,10 +20,9 @@ in
     package = unstable.immich;
     port = 2283;
     host = "127.0.0.1";
-    mediaLocation = "/srv/immich";  # change if you have a bigger disk/mount
+    mediaLocation = "/srv/immich";
     environment = {
-      IMMICH_TRUSTED_PROXIES = "127.0.0.1";  # so Immich sees real client IPs
+      IMMICH_TRUSTED_PROXIES = "127.0.0.1";
     };
   };
-
 }

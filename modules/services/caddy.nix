@@ -18,6 +18,10 @@ in
       reverse_proxy http://127.0.0.1:8090
     '';
 
+    virtualHosts."search.${domain}".extraConfig = ''
+      reverse_proxy http://127.0.0.1:4444
+    '';
+
     virtualHosts."immich.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:2283
     '';
@@ -80,7 +84,6 @@ in
       abort @outside
       reverse_proxy 127.0.0.1:8080
     '';
-    
 
     virtualHosts."hakira.${tailnetName}:9110".extraConfig = ''
       tls {
