@@ -11,6 +11,8 @@
     ./reactive-resumay.nix
     ./minio.nix
     ./immich.nix
+    ./degoog.nix
+    ./stirling.nix
 
     ./music/beets.nix
     ./music/navidrome.nix

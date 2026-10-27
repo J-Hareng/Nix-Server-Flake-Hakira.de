@@ -85,6 +85,11 @@ in
       reverse_proxy 127.0.0.1:8080
     '';
 
+    virtualHosts."hakira.${tailnetName}:9112".extraConfig = ''
+            encode zstd gzip
+            reverse_proxy 127.0.0.1:8484
+          '';
+
     virtualHosts."hakira.${tailnetName}:9110".extraConfig = ''
       tls {
         get_certificate tailscale
