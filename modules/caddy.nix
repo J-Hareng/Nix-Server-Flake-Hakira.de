@@ -18,7 +18,15 @@ in
       reverse_proxy http://127.0.0.1:8090
     '';
 
+    virtualHosts."tinyauth.${domain}".extraConfig = ''
+      reverse_proxy 127.0.0.1:3001
+    '';
+
     virtualHosts."search.${domain}".extraConfig = ''
+      forward_auth 127.0.0.1:3001 {
+        uri /api/auth/caddy
+        copy_headers Remote-User Remote-Email Remote-Name Remote-Groups
+      }
       reverse_proxy http://127.0.0.1:4444
     '';
 

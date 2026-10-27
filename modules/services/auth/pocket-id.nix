@@ -11,7 +11,6 @@
     };
 
     settings = {
-      # <https://pocket-id.org/docs/configuration/environment-variables>
       APP_URL = "https://auth.hakira.de";
       TRUST_PROXY = true;
       HOST = "127.0.0.1";
