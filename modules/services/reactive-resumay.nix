@@ -1,30 +1,45 @@
-{ config, pkgs, ... }:
+{
+  config,
+  TailnetName,
+  ...
+}:
 let
-  secrets = "/etc/secrets/reac-resumay";
-  tailnetName = "pufferfish-terrapin.ts.net";
-  appUrl = "https://hakira.${tailnetName}:8444";
+  appUrl = "https://hakira.${TailnetName}:8444";
 in
 {
+  sops.secrets."reactive-resume/env" = {
+    sopsFile = ../../secrets/reactive_resume.env;
+    format = "dotenv";
+  };
+
   # --- PostgreSQL: nur localhost (Standard), Passwort-Auth ---
   services.postgresql = {
     enable = true;
     ensureDatabases = [ "reactive_resume" ];
-    ensureUsers = [{
-      name = "reactive_resume";
-      ensureDBOwnership = true;
-    }];
+    ensureUsers = [
+      {
+        name = "reactive_resume";
+        ensureDBOwnership = true;
+      }
+    ];
   };
 
   systemd.services.reactive-resume-db-password = {
     description = "Set Reactive Resume DB password";
-    after = [ "postgresql.service" "postgresql-setup.service" ];
-    requires = [ "postgresql.service" "postgresql-setup.service" ];
+    after = [
+      "postgresql.service"
+      "postgresql-setup.service"
+    ];
+    requires = [
+      "postgresql.service"
+      "postgresql-setup.service"
+    ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
       User = "postgres";
-      EnvironmentFile = secrets;
+      EnvironmentFile = config.sops.secrets."reactive_resume/env".path;
     };
     script = ''
       ${config.services.postgresql.package}/bin/psql -v ON_ERROR_STOP=1 \
@@ -48,7 +63,7 @@ in
         OAUTH_PROVIDER_NAME = "Pocket ID";
         OAUTH_DISCOVERY_URL = "https://auth.hakira.de/.well-known/openid-configuration";
       };
-      environmentFiles = [ secrets ];
+      environmentFiles = [ config.sops.secrets."reactive_resume/env".path ];
       volumes = [ "/var/lib/reactive-resume:/app/data" ];
       extraOptions = [
         "--network=host"
@@ -62,10 +77,19 @@ in
     requires = [ "reactive-resume-db-password.service" ];
   };
 
-systemd.tmpfiles.rules = [
-  "d /var/lib/reactive-resume 0750 1000 1000 -"
-];
+  systemd.tmpfiles.rules = [
+    "d /var/lib/reactive-resume 0750 1000 1000 -"
+  ];
 
+  services.caddy.virtualHosts."${appUrl}".extraConfig = ''
+    tls {
+      get_certificate tailscale
+    }
+    @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
+    abort @outside
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:3000
+  '';
   # Port nur über das Tailscale-Interface erreichbar
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8444 ];
 }
