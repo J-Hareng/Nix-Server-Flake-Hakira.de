@@ -8,7 +8,6 @@
     ./live-sync-obsidean.nix
     ./mcserver.nix
     ./reactive-resumay.nix
-    ./minio.nix
     ./immich.nix
     ./degoog.nix
     ./stirling.nix
@@ -18,7 +17,6 @@
 
     ./music/beets.nix
     ./music/navidrome.nix
-    ./music/copyparty.nix
 
     ./email/stalwart.nix
     ./email/webmail.nix
