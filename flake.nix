@@ -3,7 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+
     copyparty.url = "github:9001/copyparty";
+
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     degoog = {
@@ -25,28 +27,25 @@
       sops-nix,
       ...
     }@inputs:
-    let
-      mkSystem = nixpkgs.lib.nixosSystem {
+    {
+      nixosConfigurations.hakira = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         specialArgs = {
           inherit inputs;
-
           TailnetName = "pufferfish-terrapin.ts.net";
           Domain = "hakira.de";
-
         };
+
         modules = [
+
           copyparty.nixosModules.default
           { nixpkgs.overlays = [ copyparty.overlays.default ]; }
+
           sops-nix.nixosModules.sops
+
           ./hosts/vm4
         ];
-      };
-    in
-    {
-      nixosConfigurations = {
-        hakira = mkSystem "hakira";
       };
     };
 }
