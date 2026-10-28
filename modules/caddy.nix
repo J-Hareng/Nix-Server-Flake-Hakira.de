@@ -28,8 +28,6 @@ in
       reverse_proxy http://127.0.0.1:3923
     '';
 
-    #Tailnet
-
     virtualHosts."hakira.${tailnetName}:9112".extraConfig = ''
             encode zstd gzip
             reverse_proxy 127.0.0.1:8484

@@ -4,7 +4,7 @@ let
 in
 {
   sops.secrets."discord-bot/cert" = {
-    sopsFile = ../../secrets/singlekeys.yaml;
+    sopsFile = ../secrets/singlekeys.yaml;
     key = "discord_bot_cert";
   };
 
