@@ -38,19 +38,6 @@ in
       reverse_proxy http://127.0.0.1:3923
     '';
 
-    virtualHosts."vault.${domain}".extraConfig = ''
-      encode zstd gzip
-      reverse_proxy http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}
-    '';
-
-    virtualHosts."livesync.${domain}".extraConfig = ''
-      reverse_proxy 127.0.0.1:5984 {
-        header_up Host {http.reverse_proxy.upstream.hostport}
-        header_up X-Forwarded-For {client_ip}
-        header_up X-Forwarded-Proto {scheme}
-      }
-    '';
-
     #Mail
     virtualHosts."mta-sts.${domain}".extraConfig = ''
       root * ${mtaSts}

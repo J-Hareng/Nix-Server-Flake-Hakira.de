@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  Domain,
+  ...
+}:
 
 {
 
@@ -29,6 +34,15 @@
       httpd = {
         max_http_request_size = 4294967296;
       };
+
+      services.caddy.virtualHosts."livesync.${Domain}".extraConfig = ''
+        reverse_proxy 127.0.0.1:5984 {
+          header_up Host {http.reverse_proxy.upstream.hostport}
+          header_up X-Forwarded-For {client_ip}
+          header_up X-Forwarded-Proto {scheme}
+        }
+      '';
+
     };
   };
 

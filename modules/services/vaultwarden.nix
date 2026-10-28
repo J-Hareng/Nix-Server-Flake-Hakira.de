@@ -1,14 +1,24 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  Domain,
+  ...
+}:
 {
   environment.systemPackages = with pkgs; [
     vaultwarden
   ];
+
+  sops.secrets."vaultwarden/env" = {
+    sopsFile = ../../secrets/vaultwarden.env;
+    format = "dotenv";
+  };
   services.vaultwarden = {
     enable = true;
     backupDir = "/etc/backup/vaultwarden-backup";
-    environmentFile = "/etc/secrets/vaultwarden/vaultwarden.env";
+    environmentFile = config.sops.secrets."vaultwarden/env".path;
     config = {
-      DOMAIN = "https://vault.hakira.de";
+      DOMAIN = "https://vault.${Domain}";
 
       SIGNUPS_ALLOWED = false;
 
@@ -16,14 +26,11 @@
       ROCKET_PORT = 8222;
 
       ROCKET_LOG = "critical";
-
-      # --- Email settings (Optional but recommended for invitations) ---
-      # If you have a local mail server, you can configure it like this:
-      # SMTP_HOST = "127.0.0.1";
-      # SMTP_PORT = 25;
-      # SMTP_SSL = false;
-      # SMTP_FROM = "admin@vaultwarden.example.com";
-      # SMTP_FROM_NAME = "example.com Vaultwarden";
     };
   };
+
+  services.caddy.virtualHosts."vault.${Domain}".extraConfig = ''
+    encode zstd gzip
+    reverse_proxy http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}
+  '';
 }

@@ -10,8 +10,8 @@
   ];
 
   sops.secrets."pocket-id/encryptionkey" = {
-    sopsFile = ../../../secrets/singlekeys.env;
-    # format = "dotenv";
+    sopsFile = ../../../secrets/singlekeys.yaml;
+
     key = "pocket_id";
     owner = config.services.pocket-id.user;
     group = config.services.pocket-id.group;
