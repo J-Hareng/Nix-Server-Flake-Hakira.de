@@ -13,6 +13,7 @@
     sopsFile = ../../secrets/vaultwarden.env;
     format = "dotenv";
   };
+
   services.vaultwarden = {
     enable = true;
     backupDir = "/etc/backup/vaultwarden-backup";
