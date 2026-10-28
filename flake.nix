@@ -26,18 +26,23 @@
       ...
     }@inputs:
     let
-      mkSystem =
-        hostname:
-        nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            copyparty.nixosModules.default
-            { nixpkgs.overlays = [ copyparty.overlays.default ]; }
-            sops-nix.nixosModules.sops
-            ./hosts/vm4
-          ];
+      mkSystem = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        specialArgs = {
+          inherit inputs;
+
+          TailnetName = "pufferfish-terrapin.ts.net";
+          Domain = "hakira.de";
+
         };
+        modules = [
+          copyparty.nixosModules.default
+          { nixpkgs.overlays = [ copyparty.overlays.default ]; }
+          sops-nix.nixosModules.sops
+          ./hosts/vm4
+        ];
+      };
     in
     {
       nixosConfigurations = {

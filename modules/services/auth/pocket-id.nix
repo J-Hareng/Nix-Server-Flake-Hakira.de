@@ -1,13 +1,26 @@
-{ pkgs, ... }: {
+{
+  pkgs,
+  Domain,
+  config,
+  ...
+}:
+{
   environment.systemPackages = with pkgs; [
     pocket-id
   ];
+
+  sops.secrets."pocket-id/encryption-key" = {
+    sopsFile = ../../../secrets/singlekeys.env;
+    format = "dotenv";
+    key = "pocket-id";
+
+  };
 
   services.pocket-id = {
     enable = true;
 
     credentials = {
-      ENCRYPTION_KEY = "/etc/secrets/pocket-id/encryption-key";
+      ENCRYPTION_KEY = config.sops.secrets."pocket-id/encryption-key".data;
     };
 
     settings = {
@@ -17,4 +30,8 @@
       PORT = 9000;
     };
   };
+
+  services.caddy.virtualHosts."auth.${Domain}".extraConfig = ''
+    reverse_proxy http://127.0.0.1:9000
+  '';
 }

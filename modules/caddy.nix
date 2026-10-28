@@ -18,10 +18,6 @@ in
       reverse_proxy http://127.0.0.1:8090
     '';
 
-    virtualHosts."tinyauth.${domain}".extraConfig = ''
-      reverse_proxy 127.0.0.1:3001
-    '';
-
     virtualHosts."search.${domain}".extraConfig = ''
       forward_auth 127.0.0.1:3001 {
         uri /api/auth/caddy
@@ -40,10 +36,6 @@ in
 
     virtualHosts."upload.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:3923
-    '';
-
-    virtualHosts."auth.${domain}".extraConfig = ''
-      reverse_proxy http://127.0.0.1:9000
     '';
 
     virtualHosts."vault.${domain}".extraConfig = ''

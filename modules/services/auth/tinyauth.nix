@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, Domain, ... }:
 {
 
   sops.secrets."tinyauth/env" = {
@@ -16,4 +16,8 @@
       SERVER_ADDRESS = "127.0.0.1";
     };
   };
+
+  services.caddy.virtualHosts."tinyauth.${Domain}".extraConfig = ''
+    reverse_proxy 127.0.0.1:3001
+  '';
 }
