@@ -4,14 +4,13 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-    copyparty.url = "github:9001/copyparty";
-
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     degoog = {
       url = "github:degoog-org/degoog";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
