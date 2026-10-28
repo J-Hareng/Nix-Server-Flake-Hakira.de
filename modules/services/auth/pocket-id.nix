@@ -9,10 +9,10 @@
     pocket-id
   ];
 
-  sops.secrets."pocket-id/encryption-key" = {
+  sops.secrets."pocket-id/encryptionkey" = {
     sopsFile = ../../../secrets/singlekeys.env;
     format = "dotenv";
-    key = "pocket-id";
+    key = "POCKET_ID";
 
   };
 
@@ -20,7 +20,7 @@
     enable = true;
 
     credentials = {
-      ENCRYPTION_KEY = config.sops.secrets."pocket-id/encryption-key".data;
+      ENCRYPTION_KEY = config.sops.secrets."pocket-id/encryptionkey".path;
     };
 
     settings = {
