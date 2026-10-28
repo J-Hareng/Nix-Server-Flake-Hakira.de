@@ -26,7 +26,7 @@ in
     enable = true;
     package = unstable.stirling-pdf;
 
-    environmentFile = config.sops.secrets."stirling-pdf/env".path;
+    environmentFiles = [ config.sops.secrets."stirling-pdf/env".path ];
 
     environment = {
       SERVER_PORT = 8484;
@@ -36,7 +36,8 @@ in
       SECURITY_ENABLELOGIN = "true";
       SECURITY_OAUTH2_ENABLED = "true";
       SECURITY_OAUTH2_PROVIDER = "pocket-id";
-      SECURITY_OAUTH2_ISSUER = "https://auth.${Domain}/.well-known/openid-configuration";
+
+      SECURITY_OAUTH2_ISSUER = "https://auth.${Domain}";
       SECURITY_OAUTH2_SCOPES = "openid, profile, email";
       SECURITY_OAUTH2_USEASUSERNAME = "email";
       SECURITY_OAUTH2_AUTOCREATEUSER = "true";
