@@ -2,7 +2,7 @@
 {
   services.tinyauth = {
     enable = true;
-    environmentFile = "/etc/secrets/tinyaut/tinyauth.env"; # port: 3001
+    environmentFile = "/etc/secrets/tinyauth/tinyauth.env"; # port: 3001
 
     settings = {
       APPURL = "https://tinyauth.hakira.de";

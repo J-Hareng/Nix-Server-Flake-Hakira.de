@@ -10,6 +10,10 @@
       url = "github:degoog-org/degoog";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -18,6 +22,7 @@
       copyparty,
       nixpkgs-unstable,
       degoog,
+      sops-nix,
       ...
     }@inputs:
     let
@@ -29,6 +34,7 @@
           modules = [
             copyparty.nixosModules.default
             { nixpkgs.overlays = [ copyparty.overlays.default ]; }
+            sops-nix.nixosModules.sops
             ./hosts/vm4
           ];
         };
