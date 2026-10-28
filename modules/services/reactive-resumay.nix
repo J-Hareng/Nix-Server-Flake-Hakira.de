@@ -39,7 +39,7 @@ in
       Type = "oneshot";
       RemainAfterExit = true;
       User = "postgres";
-      EnvironmentFile = config.sops.secrets."reactive_resume/env".path;
+      EnvironmentFile = config.sops.secrets."reactive-resume/env".path;
     };
     script = ''
       ${config.services.postgresql.package}/bin/psql -v ON_ERROR_STOP=1 \
@@ -63,7 +63,7 @@ in
         OAUTH_PROVIDER_NAME = "Pocket ID";
         OAUTH_DISCOVERY_URL = "https://auth.hakira.de/.well-known/openid-configuration";
       };
-      environmentFiles = [ config.sops.secrets."reactive_resume/env".path ];
+      environmentFiles = [ config.sops.secrets."reactive-resume/env".path ];
       volumes = [ "/var/lib/reactive-resume:/app/data" ];
       extraOptions = [
         "--network=host"
