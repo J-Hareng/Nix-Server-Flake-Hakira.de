@@ -1,15 +1,20 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   environment.systemPackages = with pkgs; [
     stalwart
   ];
+
+  sops.secrets."acme/cloudflare.env" = {
+    sopsFile = ../../../secrets/cloudflare.env;
+    format = "dotenv";
+  };
 
   security.acme = {
     acceptTerms = true;
     defaults.email = "Julian.Hareng@gmail.com";
     certs."mail.hakira.de" = {
       dnsProvider = "cloudflare";
-      environmentFile = "/etc/secrets/acme/cloudflare.env";
+      environmentFile = config.sops.secrets."acme/cloudflare.env".path;
       group = "stalwart";
       reloadServices = [ "stalwart.service" ];
     };

@@ -1,8 +1,14 @@
-{ ... }:
+{ config, ... }:
 {
+
+  sops.secrets."tinyauth/env" = {
+    sopsFile = ../../../secrets/tinyauth.env;
+    format = "dotenv";
+  };
+
   services.tinyauth = {
     enable = true;
-    environmentFile = "/etc/secrets/tinyauth/tinyauth.env"; # port: 3001
+    environmentFile = config.sops.secrets."tinyauth/env".path;
 
     settings = {
       APPURL = "https://tinyauth.hakira.de";
