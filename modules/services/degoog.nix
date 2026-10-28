@@ -1,15 +1,27 @@
-{ inputs, ... }:
+{
+  inputs,
+  Domain,
+  config,
+  ...
+}:
 
 {
   imports = [ inputs.degoog.nixosModules.default ];
+
+  sops.secrets."degoog/env" = {
+    sopsFile = ../../secrets/degoog.env;
+    format = "dotenv";
+  };
+
   services.degoog = {
     enable = true;
 
+    environmentFile = config.sops.secrets."degoog/env".path;
     environment = {
       PORT = "4444";
       DEGOOG_PUBLIC_INSTANCE = false;
       DEGOOG_BIND_ADDRESS = "127.0.0.1";
-      DEGOOG_BASE_URL = "https://search.hakira.de";
+      DEGOOG_BASE_URL = "https://search.${Domain}";
       DEGOOG_DISTRUST_PROXY = false;
     };
   };
