@@ -1,8 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, Domain, ... }:
 {
   environment.systemPackages = with pkgs; [
     navidrome
-    copyparty
   ];
 
   users.groups.music = {
@@ -24,26 +23,7 @@
     };
   };
 
-  #
-  # services.copyparty = {
-  #   enable = true;
-  #   group = "music";
-  #   settings = {
-  #     i = "127.0.0.1";
-  #     p = [ 3923 ];
-  #     rproxy = 1;
-  #   };
-  #   accounts = {
-  #     admin.passwordFile = "/etc/secrets/copyparty/admin.pw";
-  #     berry.passwordFile = "/etc/secrets/copyparty/berry.pw";
-  #   };
-  #   volumes."/" = {
-  #     path = "/srv/music";
-  #     access = {
-  #       A = [ "admin" ];
-  #       w = [ "berry" ];
-  #     };
-  #   };
-  # };
-
+  services.caddy.virtualHosts."media.${Domain}".extraConfig = ''
+    reverse_proxy http://127.0.0.1:4533
+  '';
 }

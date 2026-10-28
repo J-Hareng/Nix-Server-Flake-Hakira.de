@@ -20,7 +20,6 @@
   outputs =
     {
       nixpkgs,
-      copyparty,
       nixpkgs-unstable,
       degoog,
       sops-nix,
@@ -37,9 +36,6 @@
         };
 
         modules = [
-
-          copyparty.nixosModules.default
-          { nixpkgs.overlays = [ copyparty.overlays.default ]; }
 
           sops-nix.nixosModules.sops
 

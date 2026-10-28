@@ -7,10 +7,8 @@
       #ssh
       22
 
-      #http/https
       80
       443
-
       #email
       25
       465

@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  TailnetName,
   ...
 }:
 let
@@ -23,4 +24,9 @@ in
       LANGS = "de_DE";
     };
   };
+
+  services.caddy.virtualHosts."hakira.${TailnetName}:9112".extraConfig = ''
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:8484
+  '';
 }

@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  Domain,
   ...
 }:
 let
@@ -25,4 +26,8 @@ in
       IMMICH_TRUSTED_PROXIES = "127.0.0.1";
     };
   };
+
+  services.caddy.virtualHosts."immich.${Domain}".extraConfig = ''
+    reverse_proxy http://127.0.0.1:2283
+  '';
 }

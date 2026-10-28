@@ -25,4 +25,12 @@
       DEGOOG_DISTRUST_PROXY = false;
     };
   };
+
+  services.caddy.virtualHosts."search.${Domain}".extraConfig = ''
+    forward_auth 127.0.0.1:3001 {
+      uri /api/auth/caddy
+      copy_headers Remote-User Remote-Email Remote-Name Remote-Groups
+    }
+    reverse_proxy http://127.0.0.1:4444
+  '';
 }

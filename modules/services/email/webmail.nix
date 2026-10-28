@@ -1,7 +1,9 @@
-{ pkgs, ... }:
-let
-  tailnetName = "pufferfish-terrapin.ts.net";
-in
+{
+  pkgs,
+  config,
+  TailnetName,
+  ...
+}:
 {
   environment.systemPackages = with pkgs; [
     roundcube
@@ -9,7 +11,7 @@ in
 
   services.roundcube = {
     enable = true;
-    hostName = "hakira.${tailnetName}";
+    hostName = "hakira.${TailnetName}";
     configureNginx = false;
     maxAttachmentSize = 25;
     extraConfig = ''
@@ -30,4 +32,26 @@ in
   };
 
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8443 ];
+
+  settings.caddy.virtualHosts."hakira.${TailnetName}:8443".extraConfig = ''
+    tls {
+      get_certificate tailscale
+    }
+    @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
+    abort @outside
+    encode zstd gzip
+    header {
+      X-Content-Type-Options nosniff
+      X-Frame-Options SAMEORIGIN
+      Referrer-Policy same-origin
+    }
+    request_body {
+      max_size 40MB
+    }
+
+    root * ${config.services.roundcube.package}/public_html
+    php_fastcgi unix/${config.services.phpfpm.pools.roundcube.socket}
+    file_server
+  '';
+
 }
