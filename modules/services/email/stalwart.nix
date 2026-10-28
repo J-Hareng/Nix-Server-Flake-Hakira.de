@@ -1,12 +1,32 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  Domain,
+  ...
+}:
+let
+  mtaSts = pkgs.writeTextDir ".well-known/mta-sts.txt" ''
+    version: STSv1
+    mode: testing
+    mx: mail.hakira.de
+    max_age: 86400
+  '';
+in
 {
   environment.systemPackages = with pkgs; [
     stalwart
   ];
 
-  sops.secrets."acme/cloudflare.env" = {
-    sopsFile = ../../../secrets/cloudflare.env;
-    format = "dotenv";
+  sops.secrets = {
+    "acme/cloudflare.env" = {
+      sopsFile = ../../../secrets/cloudflare.env;
+      format = "dotenv";
+    };
+
+    "stalwart/admin_password" = {
+      sopsFile = ../../../secrets/singlekeys.yaml;
+      key = "stalwart_admin";
+    };
   };
 
   security.acme = {
@@ -30,7 +50,7 @@
     openFirewall = false; # Do NOT open the firewall – Tailscale handles access
     stateVersion = "26.05";
 
-    credentials.admin_password = "/etc/secrets/stalwart/admin-password";
+    credentials.admin_password = config.sops.secrets."stalwart/admin_password".path;
 
     settings = {
       server.hostname = "mail.hakira.de";
@@ -77,5 +97,32 @@
         secret = "%{file:/run/credentials/stalwart.service/admin_password}%";
       };
     };
+  };
+
+  services.caddy = {
+    virtualHosts."mta-sts.${Domain}".extraConfig = ''
+      root * ${mtaSts}
+      file_server
+    '';
+
+    virtualHosts."autoconfig.${Domain}".extraConfig = ''
+      @xml path /mail/config-v1.1.xml
+      handle @xml {
+        reverse_proxy 127.0.0.1:8080
+      }
+      handle {
+        respond "Not found" 404
+      }
+    '';
+
+    virtualHosts."autodiscover.${Domain}".extraConfig = ''
+      @xml path /autodiscover/autodiscover.xml
+      handle @xml {
+        reverse_proxy 127.0.0.1:8080
+      }
+      handle {
+        respond "Not found" 404
+      }
+    '';
   };
 }

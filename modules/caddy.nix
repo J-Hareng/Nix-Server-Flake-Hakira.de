@@ -2,12 +2,6 @@
 let
   tailnetName = "pufferfish-terrapin.ts.net";
   domain = "hakira.de";
-  mtaSts = pkgs.writeTextDir ".well-known/mta-sts.txt" ''
-    version: STSv1
-    mode: testing
-    mx: mail.hakira.de
-    max_age: 86400
-  '';
 in
 {
 
@@ -32,30 +26,6 @@ in
 
     virtualHosts."upload.${domain}".extraConfig = ''
       reverse_proxy http://127.0.0.1:3923
-    '';
-
-    #Mail
-    virtualHosts."mta-sts.${domain}".extraConfig = ''
-      root * ${mtaSts}
-      file_server
-    '';
-    virtualHosts."autoconfig.${domain}".extraConfig = ''
-      @xml path /mail/config-v1.1.xml
-      handle @xml {
-        reverse_proxy 127.0.0.1:8080
-      }
-      handle {
-        respond "Not found" 404
-      }
-    '';
-    virtualHosts."autodiscover.${domain}".extraConfig = ''
-      @xml path /autodiscover/autodiscover.xml
-      handle @xml {
-        reverse_proxy 127.0.0.1:8080
-      }
-      handle {
-        respond "Not found" 404
-      }
     '';
 
     #Tailnet

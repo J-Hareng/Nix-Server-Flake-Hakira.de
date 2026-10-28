@@ -8,6 +8,7 @@
   services.tailscale = {
     enable = true;
     permitCertUid = "caddy"; # Grants the caddy user permission
+
     # If you would like to use a preauthorized key, set
     # authKeyFile = "/run/secrets/tailscale_key";
     # Note: maximum expire time is 90 days
