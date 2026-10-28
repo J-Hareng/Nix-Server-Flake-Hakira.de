@@ -33,7 +33,7 @@
 
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8443 ];
 
-  settings.caddy.virtualHosts."hakira.${TailnetName}:8443".extraConfig = ''
+  services.caddy.virtualHosts."hakira.${TailnetName}:8443".extraConfig = ''
     tls {
       get_certificate tailscale
     }
