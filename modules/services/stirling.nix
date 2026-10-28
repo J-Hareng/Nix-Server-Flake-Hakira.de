@@ -25,7 +25,9 @@ in
   services.stirling-pdf = {
     enable = true;
     package = unstable.stirling-pdf;
+
     environmentFile = config.sops.secrets."stirling-pdf/env".path;
+
     environment = {
       SERVER_PORT = 8484;
       SERVER_ADDRESS = "127.0.0.1";
@@ -34,14 +36,14 @@ in
       SECURITY_ENABLELOGIN = "true";
       SECURITY_OAUTH2_ENABLED = "true";
       SECURITY_OAUTH2_PROVIDER = "pocket-id";
-      SECURITY_OAUTH2_ISSUER = "https://auth.${Domain}";
+      SECURITY_OAUTH2_ISSUER = "https://auth.${Domain}/.well-known/openid-configuration";
       SECURITY_OAUTH2_SCOPES = "openid, profile, email";
       SECURITY_OAUTH2_USEASUSERNAME = "email";
       SECURITY_OAUTH2_AUTOCREATEUSER = "true";
     };
   };
 
-  services.caddy."pdf.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."pdf.${Domain}".extraConfig = ''
     encode zstd gzip
     reverse_proxy 127.0.0.1:8484
   '';
