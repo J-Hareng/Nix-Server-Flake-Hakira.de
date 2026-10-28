@@ -37,7 +37,7 @@ jobs:
             --exclude '.git' --exclude '.github' \
             ./ "${{ secrets.DEPLOY_USER }}"@"${{ secrets.DEPLOY_SERVER }}":"${{secrets.DEPLOY_LOCATION}}"
 
-      - name: build with nh
-        run: |
-          ssh "${{ secrets.DEPLOY_USER }}"@"${{secrets.DEPLOY_SERVER}}"\
-            'nh os build --no-nom'
+      # - name: build with nh
+      #   run: |
+      #     ssh "${{ secrets.DEPLOY_USER }}"@"${{secrets.DEPLOY_SERVER}}"\
+      #       'nh os build'
