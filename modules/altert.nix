@@ -1,11 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
+let
+  credentials = "webhook:/${config.sops.secrets."discord-bot/cert".path}";
+in
 {
+  sops.secrets."discord-bot/cert" = {
+    sopsFile = ../../secrets/singlekeys.yaml;
+    key = "discord_bot_cert";
+  };
+
   systemd.services.notify-acme-failure = {
     description = "Discord alert: certificate renewal failed";
     path = [ pkgs.curl ];
     serviceConfig = {
       Type = "oneshot";
-      LoadCredential = "webhook:/etc/secrets/alerts/discord-webhook-cert";
+      LoadCredential = "${credentials}";
     };
     script = ''
       curl -fsS -H 'Content-Type: application/json' \
@@ -20,7 +28,7 @@
     path = [ pkgs.curl ];
     serviceConfig = {
       Type = "oneshot";
-      LoadCredential = "webhook:/etc/secrets/alerts/discord-webhook-cert";
+      LoadCredential = "${credentials}";
     };
     script = ''
       curl -fsS -H 'Content-Type: application/json' \
@@ -39,7 +47,7 @@
     ];
     serviceConfig = {
       Type = "oneshot";
-      LoadCredential = "webhook:/etc/secrets/alerts/discord-webhook-cert";
+      LoadCredential = "${credentials}";
     };
     script = ''
       notify() {
