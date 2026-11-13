@@ -31,12 +31,13 @@
 
         specialArgs = {
           inherit inputs;
+
           TailnetName = "pufferfish-terrapin.ts.net";
           Domain = "hakira.de";
+
         };
 
         modules = [
-
           sops-nix.nixosModules.sops
 
           ./hosts/vm4
