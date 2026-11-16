@@ -53,9 +53,9 @@
         reverse_proxy 127.0.0.1:5555
     '';
 
-    nixpkgs.config.allowUnfreePredicate = pkg:
-      builtins.elem (lib.getName pkg) [
-        "open-webui"
-      ];
   };
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "open-webui"
+    ];
 }
