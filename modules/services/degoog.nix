@@ -1,8 +1,7 @@
-{
-  inputs,
-  Domain,
-  config,
-  ...
+{ inputs
+, Domain
+, config
+, ...
 }:
 
 {

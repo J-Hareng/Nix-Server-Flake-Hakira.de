@@ -1,10 +1,9 @@
-{
-  pkgs,
-  Domain,
-  config,
-  ...
+{ pkgs
+, Domain
+, config
+, ...
 }:
-
+# info
 {
   environment.systemPackages = [
     pkgs.beszel

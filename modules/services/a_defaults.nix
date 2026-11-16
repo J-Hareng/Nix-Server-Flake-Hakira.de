@@ -11,7 +11,8 @@
     ./immich.nix
     ./degoog.nix
     ./stirling.nix
-    ./open-webui.nix
+
+    ./open-webui
 
     ./auth/pocket-id.nix
     ./auth/tinyauth.nix
