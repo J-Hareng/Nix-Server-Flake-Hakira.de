@@ -14,7 +14,7 @@
   };
 
 
-  virtualHosts."hakira.${TailnetName}".extraConfig = ''
+  services.caddy.virtualHosts."hakira.${TailnetName}".extraConfig = ''
       tls {
         get_certificate tailscale
       }
