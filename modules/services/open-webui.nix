@@ -13,8 +13,7 @@
     environmentFile = config.sops.secrets."webui/env".path;
   };
 
-
-  services.caddy.virtualHosts."hakira.${TailnetName}".extraConfig = ''
+  services.caddy.virtualHosts."hakira.${TailnetName}:5556".extraConfig = ''
       tls {
         get_certificate tailscale
       }
