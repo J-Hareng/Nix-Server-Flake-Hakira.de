@@ -1,7 +1,7 @@
 { config, ... }:
 {
   sops.secrets."searx/key" = {
-    sopsFile = ../secrets/singlekeys.yaml;
+    sopsFile = ../../../secrets/singlekeys.yaml;
     key = "searx_secret_key";
   };
 
