@@ -43,17 +43,16 @@
       SEARXNG_QUERY_URL = "http://127.0.0.1:8888/search?q=<query>";
 
     };
-
-    services.caddy.virtualHosts."hakira.${TailnetName}:5556".extraConfig = ''
-        tls {
-          get_certificate tailscale
-        }
-      @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
-        abort @outside
-        reverse_proxy 127.0.0.1:5555
-    '';
-
   };
+
+  services.caddy.virtualHosts."hakira.${TailnetName}:5556".extraConfig = ''
+      tls {
+        get_certificate tailscale
+      }
+    @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
+      abort @outside
+      reverse_proxy 127.0.0.1:5555
+  '';
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "open-webui"
