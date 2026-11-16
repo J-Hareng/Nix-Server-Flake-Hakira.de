@@ -3,7 +3,7 @@
   #info USES PORT 5554-5556 
 
   sops.secrets."webui/env" = {
-    sopsFile = ../../secrets/open-webui.env;
+    sopsFile = ../../../secrets/open-webui.env;
     format = "dotenv";
   };
   imports = [
