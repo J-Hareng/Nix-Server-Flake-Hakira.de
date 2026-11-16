@@ -12,7 +12,7 @@
     format = "dotenv";
   };
   imports = [
-    ./searx.nix
+    # ./searx.nix
   ];
 
   services.open-webui = {
@@ -45,9 +45,8 @@
 
       # Websearch
       ENABLE_WEB_SEARCH = "True";
-      WEB_SEARCH_ENGINE = "tavily";
-      # WEB_SEARCH_ENGINE = "searxng";
-      # SEARXNG_QUERY_URL = "http://127.0.0.1:5554/search?q=<query>";
+      WEB_SEARCH_ENGINE = "searxng";
+      SEARXNG_QUERY_URL = "http://127.0.0.1:5554/search?q=<query>";
     };
   };
 
