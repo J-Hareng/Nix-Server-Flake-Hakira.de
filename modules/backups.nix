@@ -64,7 +64,9 @@
       "/var/lib/vaultwarden/icon_cache"
       "**/.cache"
     ];
+
     backupPrepareCommand = "${pkgs.systemd}/bin/systemctl stop stalwart.service";
+    backupCleanupCommand = "${pkgs.systemd}/bin/systemctl start stalwart.service";
 
     timerConfig = {
       OnCalendar = "03:00";
@@ -77,7 +79,4 @@
       "--keep-monthly 6"
     ];
   };
-
-  systemd.services.restic-backups-pi.serviceConfig.ExecStopPost =
-    "-${pkgs.systemd}/bin/systemctl start stalwart.service";
 }
