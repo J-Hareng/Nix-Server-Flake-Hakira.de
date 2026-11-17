@@ -1,4 +1,5 @@
-{ config }: {
+{ config, pkgs, ... }: {
+
 
   sops.secrets."restic/password" = {
     sopsFile = ../secrets/restic.yaml;
