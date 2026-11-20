@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ./server-networking.nix
     ../../modules/a_defaults.nix
+    ./config
   ];
 
   boot.loader.grub.enable = true;

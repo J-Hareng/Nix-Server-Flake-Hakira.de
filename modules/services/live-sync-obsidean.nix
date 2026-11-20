@@ -1,11 +1,9 @@
-{
-  pkgs,
-  Domain,
-  ...
+{ pkgs
+, config
+, ...
 }:
-
+#INFO PORTS: 5984
 {
-
   services.couchdb = {
     enable = true;
     package = pkgs.couchdb3;
@@ -37,7 +35,7 @@
     };
   };
 
-  services.caddy.virtualHosts."livesync.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."livesync.${config.domain}".extraConfig = ''
     reverse_proxy 127.0.0.1:5984 {
       header_up Host {http.reverse_proxy.upstream.hostport}
       header_up X-Forwarded-For {client_ip}

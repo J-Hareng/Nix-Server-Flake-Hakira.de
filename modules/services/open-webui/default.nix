@@ -1,6 +1,6 @@
-{ lib, Domain, TailnetName, config, ... }:
+{ lib, config, ... }:
+#INFO PORTS: 5555-5556 
 {
-  #info USES PORT 5554-5556 
 
   sops.secrets."webui/env" = {
     sopsFile = ../../../secrets/open-webui.env;
@@ -11,9 +11,6 @@
     sopsFile = ../../../secrets/open-webui.env;
     format = "dotenv";
   };
-  imports = [
-    # ./searx.nix
-  ];
 
   services.open-webui = {
     enable = true;
@@ -50,7 +47,7 @@
     };
   };
 
-  services.caddy.virtualHosts."hakira.${TailnetName}:5556".extraConfig = ''
+  services.caddy.virtualHosts."hakira.${vpn-domain}:5556".extraConfig = ''
       tls {
         get_certificate tailscale
       }

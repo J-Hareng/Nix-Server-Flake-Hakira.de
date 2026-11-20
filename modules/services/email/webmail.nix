@@ -1,9 +1,9 @@
-{
-  pkgs,
-  config,
-  TailnetName,
-  ...
+{ pkgs
+, config
+, ...
 }:
+
+#INFO PORTS: 8443 
 {
   environment.systemPackages = with pkgs; [
     roundcube
@@ -11,7 +11,7 @@
 
   services.roundcube = {
     enable = true;
-    hostName = "hakira.${TailnetName}";
+    hostName = "hakira.${vpn-domain}";
     configureNginx = false;
     maxAttachmentSize = 25;
     extraConfig = ''
@@ -33,7 +33,7 @@
 
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8443 ];
 
-  services.caddy.virtualHosts."hakira.${TailnetName}:8443".extraConfig = ''
+  services.caddy.virtualHosts."hakira.${vpn-domain}:8443".extraConfig = ''
     tls {
       get_certificate tailscale
     }

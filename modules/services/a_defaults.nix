@@ -3,7 +3,6 @@
   imports = [
     ./vaultwarden.nix
     ./beszel.nix
-    ./tailscale.nix
 
     ./live-sync-obsidean.nix
     ./mcserver.nix
@@ -13,6 +12,8 @@
     ./stirling.nix
 
     ./open-webui
+
+    ./vpn
 
     ./auth/pocket-id.nix
     ./auth/tinyauth.nix

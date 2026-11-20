@@ -1,9 +1,8 @@
-{
-  pkgs,
-  config,
-  Domain,
-  ...
+{ pkgs
+, config
+, ...
 }:
+#INFO PORTS 8222 
 {
   environment.systemPackages = with pkgs; [
     vaultwarden
@@ -19,7 +18,7 @@
     backupDir = "/etc/backup/vaultwarden-backup";
     environmentFile = config.sops.secrets."vaultwarden/env".path;
     config = {
-      DOMAIN = "https://vault.${Domain}";
+      DOMAIN = "https://vault.${config.domain}";
 
       SIGNUPS_ALLOWED = false;
 
@@ -30,7 +29,7 @@
     };
   };
 
-  services.caddy.virtualHosts."vault.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."vault.${config.domain}".extraConfig = ''
     encode zstd gzip
     reverse_proxy http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}
   '';

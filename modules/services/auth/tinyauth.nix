@@ -1,6 +1,6 @@
-{ config, Domain, ... }:
+{ config, ... }:
+#INFO PORTS: 3001
 {
-
   sops.secrets."tinyauth/env" = {
     sopsFile = ../../../secrets/tinyauth.env;
     format = "dotenv";
@@ -11,13 +11,13 @@
     environmentFile = config.sops.secrets."tinyauth/env".path;
 
     settings = {
-      APPURL = "https://tinyauth.hakira.de";
+      APPURL = "https://tinyauth.${config.domain}";
       SERVER_PORT = 3001;
       SERVER_ADDRESS = "127.0.0.1";
     };
   };
 
-  services.caddy.virtualHosts."tinyauth.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."tinyauth.${config.domain}".extraConfig = ''
     reverse_proxy 127.0.0.1:3001
   '';
 }

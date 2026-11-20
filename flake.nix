@@ -18,12 +18,11 @@
   };
 
   outputs =
-    {
-      nixpkgs,
-      nixpkgs-unstable,
-      degoog,
-      sops-nix,
-      ...
+    { nixpkgs
+    , nixpkgs-unstable
+    , degoog
+    , sops-nix
+    , ...
     }@inputs:
     {
       nixosConfigurations.hakira = nixpkgs.lib.nixosSystem {
@@ -32,14 +31,11 @@
         specialArgs = {
           inherit inputs;
 
-          TailnetName = "pufferfish-terrapin.ts.net";
-          Domain = "hakira.de";
 
         };
 
         modules = [
           sops-nix.nixosModules.sops
-
           ./hosts/vm4
         ];
       };

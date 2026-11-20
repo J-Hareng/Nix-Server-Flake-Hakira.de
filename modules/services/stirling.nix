@@ -1,10 +1,9 @@
-{
-  pkgs,
-  inputs,
-  Domain,
-  config,
-  ...
+{ pkgs
+, inputs
+, config
+, ...
 }:
+#INOF PORTS 8484
 let
   unstable = import inputs.nixpkgs-unstable {
     inherit (pkgs.stdenv.hostPlatform) system;
@@ -36,7 +35,7 @@ in
       SECURITY_ENABLELOGIN = "true";
       SECURITY_OAUTH2_ENABLED = "true";
       SECURITY_OAUTH2_PROVIDER = "pocket-id";
-      SECURITY_OAUTH2_ISSUER = "https://auth.${Domain}";
+      SECURITY_OAUTH2_ISSUER = "https://auth.${config.domain}";
       SECURITY_OAUTH2_SCOPES = "openid, profile, email";
       SECURITY_OAUTH2_USEASUSERNAME = "email";
       SECURITY_OAUTH2_AUTOCREATEUSER = "true";
@@ -45,7 +44,7 @@ in
     };
   };
 
-  services.caddy.virtualHosts."pdf.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."pdf.${config.domain}".extraConfig = ''
     encode zstd gzip
     reverse_proxy 127.0.0.1:8484
   '';

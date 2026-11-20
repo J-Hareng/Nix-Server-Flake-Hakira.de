@@ -4,6 +4,7 @@
 , ...
 }:
 
+#INFO PORTS: 4444,
 {
   imports = [ inputs.degoog.nixosModules.default ];
 
@@ -20,12 +21,12 @@
       PORT = "4444";
       DEGOOG_PUBLIC_INSTANCE = false;
       DEGOOG_BIND_ADDRESS = "127.0.0.1";
-      DEGOOG_BASE_URL = "https://search.${Domain}";
+      DEGOOG_BASE_URL = "https://search.${config.domain}";
       DEGOOG_DISTRUST_PROXY = false;
     };
   };
 
-  services.caddy.virtualHosts."search.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."search.${config.domain}".extraConfig = ''
     forward_auth 127.0.0.1:3001 {
       uri /api/auth/caddy
       copy_headers Remote-User Remote-Email Remote-Name Remote-Groups

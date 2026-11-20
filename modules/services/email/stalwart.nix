@@ -1,10 +1,8 @@
-{
-  pkgs,
-  config,
-  TailnetName,
-  Domain,
-  ...
+{ pkgs
+, config
+, ...
 }:
+#INFO PORTS: 8080
 let
   mtaSts = pkgs.writeTextDir ".well-known/mta-sts.txt" ''
     version: STSv1
@@ -101,7 +99,7 @@ in
   };
 
   services.caddy = {
-    virtualHosts."hakira.${TailnetName}".extraConfig = ''
+    virtualHosts."hakira.${vpn-domain}".extraConfig = ''
         tls {
           get_certificate tailscale
         }
@@ -110,12 +108,12 @@ in
         reverse_proxy 127.0.0.1:8080
     '';
 
-    virtualHosts."mta-sts.${Domain}".extraConfig = ''
+    virtualHosts."mta-sts.${config.domain}".extraConfig = ''
       root * ${mtaSts}
       file_server
     '';
 
-    virtualHosts."autoconfig.${Domain}".extraConfig = ''
+    virtualHosts."autoconfig.${config.domain}".extraConfig = ''
       @xml path /mail/config-v1.1.xml
       handle @xml {
         reverse_proxy 127.0.0.1:8080
@@ -125,7 +123,7 @@ in
       }
     '';
 
-    virtualHosts."autodiscover.${Domain}".extraConfig = ''
+    virtualHosts."autodiscover.${config.domain}".extraConfig = ''
       @xml path /autodiscover/autodiscover.xml
       handle @xml {
         reverse_proxy 127.0.0.1:8080
@@ -134,6 +132,5 @@ in
         respond "Not found" 404
       }
     '';
-
   };
 }

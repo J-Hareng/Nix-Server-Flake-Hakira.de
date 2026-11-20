@@ -1,9 +1,9 @@
-{
-  pkgs,
-  inputs,
-  Domain,
-  ...
+{ pkgs
+, inputs
+, config
+, ...
 }:
+#INFO PORTS: 2283
 let
   unstable = import inputs.nixpkgs-unstable {
     inherit (pkgs.stdenv.hostPlatform) system;
@@ -27,7 +27,7 @@ in
     };
   };
 
-  services.caddy.virtualHosts."immich.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."immich.${config.domain}".extraConfig = ''
     reverse_proxy http://127.0.0.1:2283
   '';
 }

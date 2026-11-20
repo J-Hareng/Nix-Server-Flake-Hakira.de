@@ -1,11 +1,12 @@
-{ pkgs, Domain, ... }:
+{ pkgs, config, ... }:
+
+#INFO PORTS: 4533
 {
   environment.systemPackages = with pkgs; [
     navidrome
   ];
 
-  users.groups.music = {
-  };
+  users.groups.music = { };
 
   systemd.tmpfiles.rules = [
     "d /srv/music 2775 admin music -"
@@ -23,7 +24,7 @@
     };
   };
 
-  services.caddy.virtualHosts."media.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."media.${config.domain}".extraConfig = ''
     reverse_proxy http://127.0.0.1:4533
   '';
 }

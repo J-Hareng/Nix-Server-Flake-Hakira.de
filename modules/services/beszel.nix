@@ -1,9 +1,8 @@
 { pkgs
-, Domain
 , config
 , ...
 }:
-# info
+#INFO PORTS: 8090
 {
   environment.systemPackages = [
     pkgs.beszel
@@ -32,7 +31,7 @@
     smartmon.enable = true;
   };
 
-  services.caddy.virtualHosts."stats.${Domain}".extraConfig = ''
+  services.caddy.virtualHosts."stats.${config.domain}".extraConfig = ''
     reverse_proxy http://127.0.0.1:${toString config.services.beszel.hub.port}
   '';
 

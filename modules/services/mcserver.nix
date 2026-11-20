@@ -1,4 +1,5 @@
 { config, pkgs, ... }:
+#INFO PORTS: 25565
 {
   virtualisation.oci-containers = {
     backend = "podman";
