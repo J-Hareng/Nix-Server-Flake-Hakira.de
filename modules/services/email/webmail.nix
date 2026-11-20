@@ -11,7 +11,7 @@
 
   services.roundcube = {
     enable = true;
-    hostName = "hakira.${vpn-domain}";
+    hostName = "hakira.${config.vpn-domain}";
     configureNginx = false;
     maxAttachmentSize = 25;
     extraConfig = ''
@@ -33,7 +33,7 @@
 
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8443 ];
 
-  services.caddy.virtualHosts."hakira.${vpn-domain}:8443".extraConfig = ''
+  services.caddy.virtualHosts."hakira.${config.vpn-domain}:8443".extraConfig = ''
     tls {
       get_certificate tailscale
     }

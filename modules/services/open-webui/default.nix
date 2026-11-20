@@ -47,7 +47,7 @@
     };
   };
 
-  services.caddy.virtualHosts."hakira.${vpn-domain}:5556".extraConfig = ''
+  services.caddy.virtualHosts."hakira.${config.vpn-domain}:5556".extraConfig = ''
       tls {
         get_certificate tailscale
       }

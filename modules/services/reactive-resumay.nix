@@ -3,7 +3,7 @@
 }:
 #INFO PORTS: 8444, 3000
 let
-  appUrl = "https://hakira.${vpn-domain}:8444";
+  appUrl = "https://hakira.${config.vpn-domain}:8444";
 in
 {
   sops.secrets."reactive-resume/env" = {

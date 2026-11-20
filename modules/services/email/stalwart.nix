@@ -99,7 +99,7 @@ in
   };
 
   services.caddy = {
-    virtualHosts."hakira.${vpn-domain}".extraConfig = ''
+    virtualHosts."hakira.${config.vpn-domain}".extraConfig = ''
         tls {
           get_certificate tailscale
         }
