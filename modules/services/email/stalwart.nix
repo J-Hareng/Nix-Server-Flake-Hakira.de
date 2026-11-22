@@ -114,7 +114,7 @@ in
   };
 
   services.caddy = {
-    services.caddy.virtualHosts."${adminHost}:8443".extraConfig = ''
+    virtualHosts."${adminHost}:8443".extraConfig = ''
       tls /var/lib/acme/${adminHost}/fullchain.pem /var/lib/acme/${adminHost}/key.pem
       @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
       abort @outside
