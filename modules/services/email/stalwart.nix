@@ -4,6 +4,9 @@
 }:
 #INFO PORTS: 8080
 let
+
+  adminHost = "hakira.${config.vpn-domain}";
+
   mtaSts = pkgs.writeTextDir ".well-known/mta-sts.txt" ''
     version: STSv1
     mode: testing
@@ -12,10 +15,6 @@ let
   '';
 in
 {
-  environment.systemPackages = with pkgs; [
-    stalwart
-  ];
-
   sops.secrets = {
     "acme/cloudflare.env" = {
       sopsFile = ../../../secrets/cloudflare.env;
@@ -27,6 +26,22 @@ in
       key = "stalwart_admin";
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    stalwart
+  ];
+
+  security.acme.certs.${adminHost} = {
+    dnsProvider = "cloudflare";
+    environmentFile = config.sops.secrets."acme/cloudflare.env".path;
+    group = config.services.caddy.group;
+    reloadServices = [ "caddy.service" ];
+  };
+  systemd.services.caddy = {
+    wants = [ "acme-${adminHost}.service" ];
+    after = [ "acme-${adminHost}.service" ];
+  };
+
 
   security.acme = {
     acceptTerms = true;
@@ -99,13 +114,11 @@ in
   };
 
   services.caddy = {
-    virtualHosts."hakira.${config.vpn-domain}".extraConfig = ''
-        tls {
-          get_certificate tailscale
-        }
+    services.caddy.virtualHosts."${adminHost}:8443".extraConfig = ''
+      tls /var/lib/acme/${adminHost}/fullchain.pem /var/lib/acme/${adminHost}/key.pem
       @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
-        abort @outside
-        reverse_proxy 127.0.0.1:8080
+      abort @outside
+      reverse_proxy 127.0.0.1:8080
     '';
 
     virtualHosts."mta-sts.${config.domain}".extraConfig = ''

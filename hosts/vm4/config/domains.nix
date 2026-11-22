@@ -9,7 +9,7 @@
     };
     vpn-domain = lib.mkOption {
       type = lib.types.str;
-      default = "pufferfish-terrapin.ts.net";
+      default = "ts.hakira.de";
       description = "Tailscale smart dns Domain";
     };
   };
