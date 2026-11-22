@@ -6,7 +6,7 @@ let
 
   policy = pkgs.writeText "headscale-acl.json" (builtins.toJSON {
     groups = {
-      "group:admin" = [ "julian@" ]; # check the real name with `headscale users list`
+      "group:admin" = [ "julian_hareng@" ]; # check the real name with `headscale users list`
       "group:friends" = [ ]; # add friends after their first login
     };
     tagOwners = {
@@ -31,6 +31,8 @@ in
     owner = config.services.headscale.user;
     group = config.services.headscale.group;
   };
+
+  users.users.admin.extraGroups = [ "headscale" ];
 
   services.headscale = {
     enable = true;
