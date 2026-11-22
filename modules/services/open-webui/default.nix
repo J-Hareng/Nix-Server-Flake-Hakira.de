@@ -1,5 +1,5 @@
 { lib, config, ... }:
-#INFO PORTS: 5555-5556 
+#INFO PORTS: 5555 
 {
 
   sops.secrets."webui/env" = {
@@ -47,7 +47,7 @@
     };
   };
 
-  services.caddy.virtualHosts."clank.${config.vpn-domain}:5556".extraConfig = ''
+  services.caddy.virtualHosts."clank.${config.vpn-domain}".extraConfig = ''
     import vpn_only
     reverse_proxy 127.0.0.1:5555
   '';

@@ -11,7 +11,7 @@
 
   services.roundcube = {
     enable = true;
-    hostName = "hakira.${config.vpn-domain}";
+    hostName = "webmail.${config.vpn-domain}";
     configureNginx = false;
     maxAttachmentSize = 25;
     extraConfig = ''
@@ -34,11 +34,7 @@
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8443 ];
 
   services.caddy.virtualHosts."hakira.${config.vpn-domain}:8443".extraConfig = ''
-    tls {
-      get_certificate tailscale
-    }
-    @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
-    abort @outside
+    import vpn_only
     encode zstd gzip
     header {
       X-Content-Type-Options nosniff

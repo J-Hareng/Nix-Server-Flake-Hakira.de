@@ -1,4 +1,4 @@
-{ config }:
+{ config, ... }:
 let
   d = config.vpn-domain;
   ip = "100.64.0.3";

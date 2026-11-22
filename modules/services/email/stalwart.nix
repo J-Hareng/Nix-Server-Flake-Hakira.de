@@ -30,11 +30,6 @@ in
     key = "stalwart_admin";
   };
 
-  systemd.services.stalwart = {
-    wants = [ "acme-mail.hakira.de.service" ];
-    after = [ "acme-mail.hakira.de.service" ];
-  };
-
   security.acme.certs.${mailHost} = {
     group = "stalwart";
     reloadServices = [ "stalwart.service" ];
@@ -63,8 +58,8 @@ in
       };
 
       certificate.default = {
-        cert = "%{file:/var/lib/acme/mail.hakira.de/fullchain.pem}%";
-        private-key = "%{file:/var/lib/acme/mail.hakira.de/key.pem}%";
+        cert = "%{file:/var/lib/acme/${mailHost}/fullchain.pem}%";
+        private-key = "%{file:/var/lib/acme/${mailHost}/key.pem}%";
         default = true;
       };
 
