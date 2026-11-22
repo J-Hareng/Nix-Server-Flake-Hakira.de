@@ -4,8 +4,8 @@
 }:
 #INFO PORTS: 8080
 let
-
-  adminHost = "hakira.${config.vpn-domain}";
+  adminHost = "stalwart.${config.vpn-domain}";
+  mailHost = "mail.${config.domain}";
 
   mtaSts = pkgs.writeTextDir ".well-known/mta-sts.txt" ''
     version: STSv1
@@ -13,45 +13,21 @@ let
     mx: mail.hakira.de
     max_age: 86400
   '';
+
+  xmlOnly = path: ''
+    @xml path ${path}
+    handle @xml {
+      reverse_proxy 127.0.0.1:8080
+    }
+    handle {
+      respond "Not found" 404
+    }
+  '';
 in
 {
-  sops.secrets = {
-    "acme/cloudflare.env" = {
-      sopsFile = ../../../secrets/cloudflare.env;
-      format = "dotenv";
-    };
-
-    "stalwart/admin_password" = {
-      sopsFile = ../../../secrets/singlekeys.yaml;
-      key = "stalwart_admin";
-    };
-  };
-
-  environment.systemPackages = with pkgs; [
-    stalwart
-  ];
-
-  security.acme.certs.${adminHost} = {
-    dnsProvider = "cloudflare";
-    environmentFile = config.sops.secrets."acme/cloudflare.env".path;
-    group = config.services.caddy.group;
-    reloadServices = [ "caddy.service" ];
-  };
-  systemd.services.caddy = {
-    wants = [ "acme-${adminHost}.service" ];
-    after = [ "acme-${adminHost}.service" ];
-  };
-
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "Julian.Hareng@gmail.com";
-    certs."mail.hakira.de" = {
-      dnsProvider = "cloudflare";
-      environmentFile = config.sops.secrets."acme/cloudflare.env".path;
-      group = "stalwart";
-      reloadServices = [ "stalwart.service" ];
-    };
+  sops.secrets."stalwart/admin_password" = {
+    sopsFile = ../../../secrets/singlekeys.yaml;
+    key = "stalwart_admin";
   };
 
   systemd.services.stalwart = {
@@ -59,15 +35,25 @@ in
     after = [ "acme-mail.hakira.de.service" ];
   };
 
+  security.acme.certs.${mailHost} = {
+    group = "stalwart";
+    reloadServices = [ "stalwart.service" ];
+  };
+
+  systemd.services.stalwart = {
+    wants = [ "acme-${mailHost}.service" ];
+    after = [ "acme-${mailHost}.service" ];
+  };
+
   services.stalwart = {
     enable = true;
-    openFirewall = false; # Do NOT open the firewall – Tailscale handles access
+    openFirewall = false;
     stateVersion = "26.05";
 
     credentials.admin_password = config.sops.secrets."stalwart/admin_password".path;
 
     settings = {
-      server.hostname = "mail.hakira.de";
+      server.hostname = "mail.${config.domain}";
 
       server.auto-ban = {
         auth.rate = "20/1d";
@@ -113,37 +99,18 @@ in
     };
   };
 
-  services.caddy = {
-    virtualHosts."${adminHost}:8443".extraConfig = ''
-      tls /var/lib/acme/${adminHost}/fullchain.pem /var/lib/acme/${adminHost}/key.pem
-      @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
-      abort @outside
+  services.caddy.virtualHosts = {
+    "${adminHost}".extraConfig = ''
+      import vpn_only
       reverse_proxy 127.0.0.1:8080
     '';
 
-    virtualHosts."mta-sts.${config.domain}".extraConfig = ''
+    "mta-sts.${config.domain}".extraConfig = ''
       root * ${mtaSts}
       file_server
     '';
 
-    virtualHosts."autoconfig.${config.domain}".extraConfig = ''
-      @xml path /mail/config-v1.1.xml
-      handle @xml {
-        reverse_proxy 127.0.0.1:8080
-      }
-      handle {
-        respond "Not found" 404
-      }
-    '';
-
-    virtualHosts."autodiscover.${config.domain}".extraConfig = ''
-      @xml path /autodiscover/autodiscover.xml
-      handle @xml {
-        reverse_proxy 127.0.0.1:8080
-      }
-      handle {
-        respond "Not found" 404
-      }
-    '';
+    "autoconfig.${config.domain}".extraConfig = xmlOnly "/mail/config-v1.1.xml";
+    "autodiscover.${config.domain}".extraConfig = xmlOnly "/autodiscover/autodiscover.xml";
   };
 }

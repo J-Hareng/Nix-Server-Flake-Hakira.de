@@ -25,11 +25,13 @@ let
   });
 in
 {
-  sops.secrets."headscale/oidc_secret" = {
-    sopsFile = ../../../secrets/singlekeys.yaml;
-    key = "headscale_oidc";
-    owner = config.services.headscale.user;
-    group = config.services.headscale.group;
+  sops.secrets = {
+    "headscale/oidc_secret" = {
+      sopsFile = ../../../secrets/singlekeys.yaml;
+      key = "headscale_oidc";
+      owner = config.services.headscale.user;
+      group = config.services.headscale.group;
+    };
   };
 
   users.users.admin.extraGroups = [ "headscale" ];
@@ -46,7 +48,6 @@ in
         magic_dns = true;
         base_domain = config.vpn-domain;
         override_local_dns = false;
-        nameservers.global = [ ];
       };
 
       derp = {

@@ -1,9 +1,9 @@
 { config
 , ...
 }:
-#INFO PORTS: 8444, 3000
+#INFO PORTS: 3000
 let
-  appUrl = "https://hakira.${config.vpn-domain}:8444";
+  appUrl = "https://reactive-resume.${config.vpn-domain}";
 in
 {
   sops.secrets."reactive-resume/env" = {
@@ -81,14 +81,9 @@ in
   ];
 
   services.caddy.virtualHosts."${appUrl}".extraConfig = ''
-    tls {
-      get_certificate tailscale
-    }
-    @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
-    abort @outside
+    import vpn_only
     encode zstd gzip
     reverse_proxy 127.0.0.1:3000
   '';
   # Port nur über das Tailscale-Interface erreichbar
-  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8444 ];
 }

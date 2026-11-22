@@ -47,13 +47,9 @@
     };
   };
 
-  services.caddy.virtualHosts."hakira.${config.vpn-domain}:5556".extraConfig = ''
-      tls {
-        get_certificate tailscale
-      }
-    @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48
-      abort @outside
-      reverse_proxy 127.0.0.1:5555
+  services.caddy.virtualHosts."clank.${config.vpn-domain}:5556".extraConfig = ''
+    import vpn_only
+    reverse_proxy 127.0.0.1:5555
   '';
 
   nixpkgs.config.allowUnfreePredicate = pkg:
