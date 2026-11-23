@@ -7,11 +7,6 @@
     format = "dotenv";
   };
 
-  sops.secrets."webui/tavily" = {
-    sopsFile = ../../../secrets/open-webui.env;
-    format = "dotenv";
-  };
-
   services.open-webui = {
     enable = true;
     host = "127.0.0.1";
@@ -35,7 +30,6 @@
       ENABLE_CHANNELS = "False";
       ENABLE_NOTES = "False";
 
-
       ENABLE_AUTOCOMPLETE_GENERATION = "False";
       ENABLE_TAGS_GENERATION = "False";
       ENABLE_FOLLOW_UP_GENERATION = "False";
@@ -43,7 +37,7 @@
       # Websearch
       ENABLE_WEB_SEARCH = "True";
       WEB_SEARCH_ENGINE = "searxng";
-      SEARXNG_QUERY_URL = "http://127.0.0.1:5554/search?q=<query>";
+      SEARXNG_QUERY_URL = "http://100.64.0.1:5554/search?q=<query>";
     };
   };
 
