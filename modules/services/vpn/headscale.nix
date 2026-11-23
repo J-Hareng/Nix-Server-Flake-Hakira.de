@@ -15,13 +15,13 @@ let
       "tag:client" = [ "group:admin" ];
     };
     acls = [
-
-      { action = "accept"; src = [ "group:admin" ]; dst = [ "100.64.0.1:5554" "100.64.0.1:11434" ]; }
       { action = "accept"; src = [ "group:admin" ]; dst = [ "*:*" ]; }
       # restic: server -> Pi over SSH/SFTP
       { action = "accept"; src = [ "tag:server" ]; dst = [ "tag:backup:22" ]; }
       # friends get explicit rules only, e.g.:
-
+      #
+      #
+      { action = "accept"; src = [ "tag:server" ]; dst = [ "100.64.0.1:11434,5554" ]; }
       # { action = "accept"; src = [ "group:friends" ]; dst = [ "tag:server:<port>" ]; }
     ];
   });
