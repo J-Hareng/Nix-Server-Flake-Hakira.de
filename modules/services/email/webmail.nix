@@ -31,9 +31,7 @@
     "listen.group" = "caddy";
   };
 
-  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [ 8443 ];
-
-  services.caddy.virtualHosts."hakira.${config.vpn-domain}:8443".extraConfig = ''
+  services.caddy.virtualHosts."webmail.${config.vpn-domain}:".extraConfig = ''
     import vpn_only
     encode zstd gzip
     header {
