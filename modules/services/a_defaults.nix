@@ -13,6 +13,8 @@
 
     ./open-webui
 
+    ./matrix
+
     ./vpn
 
     ./auth/pocket-id.nix

@@ -1,7 +1,6 @@
 { config, ... }:
 
 {
-
   services.caddy = {
     enable = true;
   };
@@ -26,6 +25,6 @@
 
     # Tailscale
     trustedInterfaces = [ "tailscale0" ];
-    allowedUDPPorts = [ config.services.tailscale.port ];
+    allowedUDPPorts = [ config.services.tailscale.port 3478 ];
   };
 }
