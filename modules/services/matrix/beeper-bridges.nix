@@ -38,6 +38,7 @@ in
         address = "http://127.0.0.1:29318";
         hostname = "127.0.0.1";
         port = 29318;
+        bot.username = "whatsapp_clanker";
       };
       bridge.permissions = {
         "*" = "relay";
@@ -74,6 +75,7 @@ in
         address = "http://127.0.0.1:29328";
         hostname = "127.0.0.1";
         port = 29328;
+        bot.username = "signal_clanker";
       };
       bridge.permissions = {
         "*" = "relay";
