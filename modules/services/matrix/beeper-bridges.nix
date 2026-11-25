@@ -10,11 +10,28 @@ let
   };
 in
 {
+
+  ### WHATSAPP bridge
   services.mautrix-whatsapp.package = pkgs-unstable.mautrix-whatsapp.override { withGoolm = true; };
-  services.mautrix-signal.package = pkgs-unstable.mautrix-signal.override { withGoolm = true; };
+  sops.secrets."mautrix/whatsapp_pickle_key".sopsFile = ../../../secrets/matrix.yaml;
+  sops.templates."mautrix-whatsapp.env" = {
+    content = ''
+      MAUTRIX_WHATSAPP_PICKLE_KEY=${config.sops.placeholder."mautrix/whatsapp_pickle_key"}
+    '';
+    restartUnits = [ "mautrix-whatsapp.service" ];
+  };
 
   services.mautrix-whatsapp = {
+    environmentFile = config.sops.templates."mautrix-whatsapp.env".path;
     enable = true;
+    encryption = {
+      allow = true;
+      default = true;
+      msc4190 = true;
+      self_sign = true;
+      pickle_key = "$MAUTRIX_WHATSAPP_PICKLE_KEY";
+    };
+
     settings = {
       inherit homeserver;
       appservice = {
@@ -27,12 +44,30 @@ in
         "${matrixDomain}" = "user";
         "${adminMxid}" = "admin";
       };
-      # database defaults to SQLite, which is fine for one user
     };
   };
 
+
+  ### SIGNAL bridge
+  services.mautrix-signal.package = pkgs-unstable.mautrix-signal.override { withGoolm = true; };
+  sops.secrets."mautrix/signal_pickle_key".sopsFile = ../../../secrets/matrix.yaml;
+  sops.templates."mautrix-signal.env" = {
+    content = ''
+      MAUTRIX_SIGNAL_PICKLE_KEY=${config.sops.placeholder."mautrix/signal_pickle_key"}
+    '';
+    restartUnits = [ "mautrix-signal.service" ];
+  };
+
   services.mautrix-signal = {
+    environmentFile = config.sops.templates."mautrix-signal.env".path;
     enable = true;
+    encryption = {
+      allow = true;
+      default = true;
+      msc4190 = true;
+      self_sign = true;
+      pickle_key = "$MAUTRIX_SIGNAL_PICKLE_KEY";
+    };
     settings = {
       inherit homeserver;
       appservice = {
