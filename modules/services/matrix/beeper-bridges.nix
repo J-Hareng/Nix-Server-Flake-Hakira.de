@@ -10,7 +10,6 @@ let
   };
 in
 {
-
   ### WHATSAPP bridge
   services.mautrix-whatsapp.package = pkgs-unstable.mautrix-whatsapp.override { withGoolm = true; };
   sops.secrets."mautrix/whatsapp_pickle_key".sopsFile = ../../../secrets/matrix.yaml;
@@ -40,15 +39,32 @@ in
         port = 29318;
         bot.username = "wabot";
       };
-      bridge.permissions = {
-        "*" = "relay";
-        "${matrixDomain}" = "user";
-        "${adminMxid}" = "admin";
+      backfill = {
+        enabled = true;
+        max_initial_messages = 200;
+      };
+
+      network.history_sync.max_initial_conversations = 30;
+
+      bridge = {
+        cleanup_on_logout = {
+          enabled = true;
+          manual = {
+            private = "delete";
+            relayed = "delete";
+            shared_no_users = "delete";
+            shared_has_users = "nothing";
+          };
+        };
+
+        permissions = {
+          "*" = "relay";
+          "${matrixDomain}" = "user";
+          "${adminMxid}" = "admin";
+        };
       };
     };
   };
-
-
   ### SIGNAL bridge
   services.mautrix-signal.package = pkgs-unstable.mautrix-signal.override { withGoolm = true; };
   sops.secrets."mautrix/signal_pickle_key".sopsFile = ../../../secrets/matrix.yaml;
