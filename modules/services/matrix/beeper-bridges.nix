@@ -1,4 +1,4 @@
-{ config, nixpkgs-unstable, ... }:
+{ config, inputs, pkgs, ... }:
 let
   pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
   matrixDomain = "matrix.${config.domain}";
@@ -10,8 +10,8 @@ let
   };
 in
 {
-  services.mautrix-whatsapp.package = nixpkgs-unstable.mautrix-whatsapp;
-  services.mautrix-signal.package = nixpkgs-unstable.mautrix-signal;
+  services.mautrix-whatsapp.package = pkgs-unstable.mautrix-whatsapp.override { withGoolm = true; };
+  services.mautrix-signal.package = pkgs-unstable.mautrix-signal.override { withGoolm = true; };
 
   services.mautrix-whatsapp = {
     enable = true;
