@@ -10,6 +10,7 @@ in
 
   imports = [
     ./matrixrc.nix
+    ./beeper-bridges.nix
   ];
 
   sops.secrets."continuwuity/oidc_secret" = {
@@ -101,15 +102,19 @@ in
     '';
 
     "sable.${matrixDomain}".extraConfig = ''
-      root * ${pkgs.runCommand "sable-web" { } ''
-        mkdir -p $out
-        tar -xzf ${pkgs.fetchurl {
-          url = "https://git.sable.moe/SableClient/sable-next/releases/download/v26.11.4/sable-26.11.4-web.tar.gz";
-          sha256 = "8d3829608fd963772e5dcfb31385afd8fe6de9fee089ef9ce076352fa2c9d612";
-        }} -C $out --strip-components=1
-      ''}
-      file_server
-      try_files {path} {path}/ /index.html
+      forward_auth 127.0.0.1:3001 {
+        uri /api/auth/caddy
+        copy_headers Remote-User Remote-Email Remote-Name Remote-Groups
+      }
+        root * ${pkgs.runCommand "sable-web" { } ''
+          mkdir -p $out
+          tar -xzf ${pkgs.fetchurl {
+            url = "https://git.sable.moe/SableClient/sable-next/releases/download/v26.11.4/sable-26.11.4-web.tar.gz";
+            sha256 = "8d3829608fd963772e5dcfb31385afd8fe6de9fee089ef9ce076352fa2c9d612";
+          }} -C $out --strip-components=1
+        ''}
+        file_server
+        try_files {path} {path}/ /index.html
     '';
   };
 }
