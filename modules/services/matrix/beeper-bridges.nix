@@ -1,9 +1,7 @@
 { config, nixpkgs-unstable, ... }:
 let
+  pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
   matrixDomain = "matrix.${config.domain}";
-  # Your MXID. With OIDC and user_id_claim = "sub", this is likely
-  # a UUID-style localpart, so check it in Sable.
-  #YOUR_LOCALPART
   adminMxid = "@hakira:${matrixDomain}";
 
   homeserver = {
