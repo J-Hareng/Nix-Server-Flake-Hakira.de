@@ -13,6 +13,7 @@ let
 in
 {
   services.mautrix-whatsapp.package = nixpkgs-unstable.mautrix-whatsapp;
+  services.mautrix-signal.package = nixpkgs-unstable.mautrix-signal;
 
   services.mautrix-whatsapp = {
     enable = true;
