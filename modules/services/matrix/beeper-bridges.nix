@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, nixpkgs-unstable, ... }:
 let
   matrixDomain = "matrix.${config.domain}";
   # Your MXID. With OIDC and user_id_claim = "sub", this is likely
@@ -12,6 +12,8 @@ let
   };
 in
 {
+  services.mautrix-whatsapp.package = nixpkgs-unstable.mautrix-whatsapp;
+
   services.mautrix-whatsapp = {
     enable = true;
     settings = {
