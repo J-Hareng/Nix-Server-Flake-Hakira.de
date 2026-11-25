@@ -24,16 +24,16 @@ in
   services.mautrix-whatsapp = {
     environmentFile = config.sops.templates."mautrix-whatsapp.env".path;
     enable = true;
-    encryption = {
-      allow = true;
-      default = true;
-      msc4190 = true;
-      self_sign = true;
-      pickle_key = "$MAUTRIX_WHATSAPP_PICKLE_KEY";
-    };
 
     settings = {
       inherit homeserver;
+      encryption = {
+        allow = true;
+        default = true;
+        msc4190 = true;
+        self_sign = true;
+        pickle_key = "$MAUTRIX_WHATSAPP_PICKLE_KEY";
+      };
       appservice = {
         address = "http://127.0.0.1:29318";
         hostname = "127.0.0.1";
@@ -61,15 +61,15 @@ in
   services.mautrix-signal = {
     environmentFile = config.sops.templates."mautrix-signal.env".path;
     enable = true;
-    encryption = {
-      allow = true;
-      default = true;
-      msc4190 = true;
-      self_sign = true;
-      pickle_key = "$MAUTRIX_SIGNAL_PICKLE_KEY";
-    };
     settings = {
       inherit homeserver;
+      encryption = {
+        allow = true;
+        default = true;
+        msc4190 = true;
+        self_sign = true;
+        pickle_key = "$MAUTRIX_SIGNAL_PICKLE_KEY";
+      };
       appservice = {
         address = "http://127.0.0.1:29328";
         hostname = "127.0.0.1";
