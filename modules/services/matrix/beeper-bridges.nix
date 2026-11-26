@@ -77,6 +77,7 @@ in
 
   services.mautrix-signal = {
     environmentFile = config.sops.templates."mautrix-signal.env".path;
+
     enable = true;
     settings = {
       inherit homeserver;
@@ -87,16 +88,32 @@ in
         self_sign = true;
         pickle_key = "$MAUTRIX_SIGNAL_PICKLE_KEY";
       };
+      backfill = {
+        enabled = true;
+        max_initial_messages = 200;
+      };
       appservice = {
         address = "http://127.0.0.1:29328";
         hostname = "127.0.0.1";
         port = 29328;
         bot.username = "sgbot";
       };
-      bridge.permissions = {
-        "*" = "relay";
-        "${matrixDomain}" = "user";
-        "${adminMxid}" = "admin";
+      bridge = {
+        cleanup_on_logout = {
+          enabled = true;
+          manual = {
+            private = "delete";
+            relayed = "delete";
+            shared_no_users = "delete";
+            shared_has_users = "nothing";
+          };
+        };
+
+        permissions = {
+          "*" = "relay";
+          "${matrixDomain}" = "user";
+          "${adminMxid}" = "admin";
+        };
       };
     };
   };
